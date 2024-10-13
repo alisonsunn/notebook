@@ -37,4 +37,16 @@ app.post("/post-notes", async (req,res) => {
   }
 })
 
+// delete notes API
+app.post("/delete-notes", async (req,res) => {
+  const {title} = req.query;
+  try {
+    const deletedNote = await prisma.note.delete({
+      where: { title : title }
+    })
+    res.status(201).json({ message: "Note deleted successfully!", deletedNote});
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+})
 
