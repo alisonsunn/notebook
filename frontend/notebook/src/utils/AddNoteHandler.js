@@ -2,7 +2,7 @@ import { getAllNotes } from "./GetAllNotes";
 
 export const addNoteHandler = async (title, content, setTitle, setContent, setNote, setOpenPanel) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/post-notes`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/post-note`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

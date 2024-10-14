@@ -16,13 +16,8 @@ app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 })
 
-app.get("/", (req,res) => {
-  res.json({data: 'hello'})
-})
-
-
 // post notes API
-app.post("/post-notes", async (req,res) => {
+app.post("/post-note", async (req,res) => {
   const {title, content} = req.body;
   try {
     const newNote = await prisma.note.create({
@@ -38,7 +33,7 @@ app.post("/post-notes", async (req,res) => {
 })
 
 // delete notes API
-app.post("/delete-notes", async (req,res) => {
+app.post("/delete-note", async (req,res) => {
   const {title} = req.query;
   try {
     const deletedNote = await prisma.note.delete({
@@ -57,6 +52,30 @@ app.get("/get-notes", async (req, res) => {
     res.status(201).json({ message: "get all the notes successfully!", notes})
   } catch (error) {
     res.status(500).send(error.message);
+  }
+})
+
+// edit notes API
+app.post("/edit-note", async (req, res) => {
+  const { id, title, content} = req.body;
+  try {
+    const titleConflict = await prisma.note.findUnique({
+      where: { title: title }
+    });
+
+    if (titleConflict) {
+      return res.status(409).json({ message: "Title already exists." });
+    }
+
+    const updatedNote = await prisma.note.update({
+      where: {id:id},
+      data: { title: title, content: content }
+    })
+
+    return res.status(201).json({ message: "Note updated!", updatedNote});
+
+  } catch (error) {
+    return res.status(500).json( { message: error});
   }
 })
 

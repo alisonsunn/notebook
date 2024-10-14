@@ -2,7 +2,7 @@ import { getAllNotes } from "./GetAllNotes";
 
 export const deleteNote = async (title, setNote) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/delete-notes?title=${encodeURIComponent(title)}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/delete-note?title=${encodeURIComponent(title)}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
