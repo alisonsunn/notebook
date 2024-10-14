@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { addNoteHandler } from '../../utils/AddNoteHandler';
 
 export const AddPost = (props) => {
 
-  const {openPanel, setOpenPanel} = props
+  const {openPanel, setOpenPanel, setNote} = props
 
   const customStyles = {
     content: {
@@ -21,6 +22,9 @@ export const AddPost = (props) => {
     },
   };
 
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
   return (
     <Modal
       isOpen={openPanel}
@@ -35,6 +39,8 @@ export const AddPost = (props) => {
         <input 
           type="text" 
           placeholder="Title" 
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           className="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
         />
       </div>
@@ -45,6 +51,8 @@ export const AddPost = (props) => {
         <textarea 
           rows="5" 
           placeholder="Content" 
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           className="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
@@ -52,6 +60,7 @@ export const AddPost = (props) => {
       <div className="flex justify-center">
         <button 
           className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          onClick={() => {addNoteHandler(title, content, setContent, setTitle, setNote, setOpenPanel)}}
         >
           ADD
         </button>

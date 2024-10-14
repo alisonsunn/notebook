@@ -50,3 +50,13 @@ app.post("/delete-notes", async (req,res) => {
   }
 })
 
+// get notes API
+app.get("/get-notes", async (req, res) => {
+  try {
+    const notes = await prisma.note.findMany();
+    res.status(201).json({ message: "get all the notes successfully!", notes})
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+})
+
