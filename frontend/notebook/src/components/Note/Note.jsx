@@ -2,10 +2,10 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { deleteNote } from '../../utils/DeleteNote';
 
 export const Note = (props) => {
-  const {title, content} = props
+  const {title, content, time, setNote} = props
   return (
     <div className="bg-white border-2 border-purple-300 rounded-lg shadow-md p-4 max-w-sm relative">
 
@@ -17,7 +17,7 @@ export const Note = (props) => {
 
       {/* Date */}
       <div className="text-gray-500 mb-4">
-        Fri Apr 21 2023
+        {time}
       </div>
 
       {/* Placeholder for the note */}
@@ -26,7 +26,7 @@ export const Note = (props) => {
       {/* Edit Section */}
       <div className='flex justify-end gap-5'>
         <FontAwesomeIcon icon={faPenToSquare} />
-        <FontAwesomeIcon icon={faTrash} />
+        <FontAwesomeIcon icon={faTrash} className='cursor-pointer' onClick={() => deleteNote(title, setNote)} />
       </div>
 
     </div>

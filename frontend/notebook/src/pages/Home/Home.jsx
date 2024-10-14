@@ -29,7 +29,7 @@ export const Home = () => {
       <Nav></Nav>
       <div 
         className='grid grid-cols-4 grid-flow-row gap-3 p-4'>
-        {note.map((each) => <Note key={each.id} title={each.title} content={each.content}></Note>)}
+        {note.map((each) => <Note key={each.id} title={each.title} content={each.content}time={each.createdAt} note={note} setNote={setNote}></Note>)}
       </div>
       <AddPost openPanel={openPanel} setOpenPanel={setOpenPanel} showPanel={showPanel} setNote={setNote} ></AddPost>
       <div 
