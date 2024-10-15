@@ -16,7 +16,6 @@ export const Home = () => {
     type: "add",
   });
 
-
   const showAddPanel = () => {
     setOpenPanel({...openPanel, isOpen: !openPanel.isOpen, type: "add"})
   }
@@ -32,9 +31,14 @@ export const Home = () => {
     getAllNotes(setNote)
   },[]);
 
+  // search the note
+  const searchNote = (title) => {
+    setNote(note.filter((each) => each.title === title))
+  }
+
   return (
     <>
-      <Nav></Nav>
+      <Nav searchNote={searchNote}></Nav>
       <div 
         className='grid grid-cols-4 grid-flow-row gap-3 p-4'>
         {note.map((each) => <Note key={each.id} id={each.id} title={each.title} content={each.content}time={each.createdAt} note={each} setNote={setNote} showEditPanel={showEditPanel}></Note>)}
