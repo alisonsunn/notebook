@@ -34,10 +34,10 @@ app.post("/post-note", async (req,res) => {
 
 // delete notes API
 app.post("/delete-note", async (req,res) => {
-  const {title} = req.query;
+  const {id} = req.query;
   try {
     const deletedNote = await prisma.note.delete({
-      where: { title : title }
+      where: { id : id}
     })
     res.status(201).json({ message: "Note deleted successfully!", deletedNote});
   } catch (error) {
@@ -59,14 +59,6 @@ app.get("/get-notes", async (req, res) => {
 app.post("/edit-note", async (req, res) => {
   const { id, title, content} = req.body;
   try {
-    const titleConflict = await prisma.note.findUnique({
-      where: { title: title }
-    });
-
-    if (titleConflict) {
-      return res.status(409).json({ message: "Title already exists." });
-    }
-
     const updatedNote = await prisma.note.update({
       where: {id:id},
       data: { title: title, content: content }

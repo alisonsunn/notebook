@@ -15,7 +15,7 @@ datasource db {
 
 model Note {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId 
-  title     String   @unique
+  title     String   
   content   String
   createdAt DateTime @default(now())
 }
