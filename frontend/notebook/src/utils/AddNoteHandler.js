@@ -1,6 +1,6 @@
 import { getAllNotes } from "./GetAllNotes";
 
-export const addNoteHandler = async (title, content, setTitle, setContent, setNote, setOpenPanel) => {
+export const addNoteHandler = async (title, content, setTitle, setContent, setNote, setOpenPanel, openPanel) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/post-note`, {
       method: 'POST',
@@ -10,7 +10,7 @@ export const addNoteHandler = async (title, content, setTitle, setContent, setNo
       body: JSON.stringify({
         title: title,
         content: content,
-      }),
+      })
     });
 
     const data = await response.json(); 
@@ -20,7 +20,7 @@ export const addNoteHandler = async (title, content, setTitle, setContent, setNo
       setTitle('');  
       setContent('');  
       getAllNotes(setNote);
-      setOpenPanel(false);
+      setOpenPanel({...openPanel, isOpen: false});
     } else {
       alert(`Error: ${data.message}`);
     }

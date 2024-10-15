@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { addNoteHandler } from '../../utils/AddNoteHandler';
+import { useEffect } from 'react';
+import { editNote } from '../../utils/EditNote';
+import { getAllNotes } from '../../utils/GetAllNotes';
 
 export const AddPost = (props) => {
-
-  const {openPanel, setOpenPanel, setNote} = props
+  const { openPanel, setOpenPanel, setNote } = props
+  const { isOpen, type, data } = openPanel
 
   const customStyles = {
     content: {
@@ -25,20 +28,32 @@ export const AddPost = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  useEffect(() => {
+    if (type === 'edit' && data) {
+      setTitle(data.title);
+      setContent(data.content);
+      console.log(type)
+    } if (type === 'add') {
+      setTitle('');
+      setContent('');
+      console.log(type)
+    }
+  }, [type, data]);
+
   return (
     <Modal
-      isOpen={openPanel}
-      onRequestClose={() => setOpenPanel(false)} 
+      isOpen={isOpen}
+      onRequestClose={() => setOpenPanel({ ...openPanel, isOpen: false })}
       style={customStyles}
       appElement={document.getElementById('root')}
-      >
+    >
 
       {/* Title Section  */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700">Title</label>
-        <input 
-          type="text" 
-          placeholder="Title" 
+        <input
+          type="text"
+          placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
@@ -48,9 +63,9 @@ export const AddPost = (props) => {
       {/* Content Section */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700">Content</label>
-        <textarea 
-          rows="5" 
-          placeholder="Content" 
+        <textarea
+          rows="5"
+          placeholder="Content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -58,11 +73,19 @@ export const AddPost = (props) => {
       </div>
 
       <div className="flex justify-center">
-        <button 
+        <button
           className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          onClick={() => {addNoteHandler(title, content, setContent, setTitle, setNote, setOpenPanel)}}
+          onClick={() => {
+            if (type === 'add') {
+              addNoteHandler(title, content, setContent, setTitle, setNote, setOpenPanel)
+            } else {
+              editNote(title, content, data.id, setOpenPanel, openPanel, getAllNotes, setNote)
+              console.log(title, content)
+            }
+          }
+          }
         >
-          ADD
+          {type === 'add' ? 'Add' : 'Change'}
         </button>
       </div>
     </Modal>
